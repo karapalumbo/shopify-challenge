@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
+import Loading from "./Loading";
 
 export const FilesUpload = () => {
   const [inputValue, setInputValue] = useState("");
+  const [files, setFiles] = useState([]);
 
   axios.defaults.headers.common = {
     "Content-Type": "application/json",
@@ -10,9 +12,7 @@ export const FilesUpload = () => {
 
   const handleChange = (event) => {
     event.preventDefault();
-    // const s = event.target.value;
-    // const photo = s.split("\\")[2];
-    console.log(event.target.files[0]);
+
     setInputValue(event.target.files[0]);
   };
 
@@ -21,12 +21,16 @@ export const FilesUpload = () => {
     const formData = new FormData();
     const imageFile = inputValue;
     formData.append("image", imageFile);
+
     await axios
       .post("http://localhost:8000/image", formData)
       .then((response) => {
         console.log(response);
+        setFiles([response.data.file, ...files]);
       });
   };
+
+  if (!files) return <Loading />;
 
   return (
     <>
@@ -44,6 +48,15 @@ export const FilesUpload = () => {
             </div>
           </form>
         </div>
+        {files.length ? (
+          <div>
+            {files.map((file) => {
+              return <img src={`http://localhost:8000/${file.filename}`} />;
+            })}
+          </div>
+        ) : (
+          <p>Upload a photo!</p>
+        )}
       </div>
     </>
   );
