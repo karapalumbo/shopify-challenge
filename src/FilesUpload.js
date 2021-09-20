@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Loading from "./Loading";
+import { FileCard } from "./FileCard";
+import FilesApi from "./api";
+import "./Files.css";
 
 export const FilesUpload = () => {
   const [inputValue, setInputValue] = useState("");
@@ -12,9 +15,23 @@ export const FilesUpload = () => {
 
   const handleChange = (event) => {
     event.preventDefault();
-
     setInputValue(event.target.files[0]);
   };
+
+  const handleRequest = async () => {
+    let allFiles = await FilesApi.allFiles();
+
+    let f = allFiles.map((image) => {
+      let str = image.split("/");
+      let img = str.pop();
+      return img;
+    });
+    setFiles(f);
+  };
+
+  useEffect(() => {
+    handleRequest();
+  }, []);
 
   const handleUpload = async (e) => {
     e.preventDefault();
@@ -22,11 +39,11 @@ export const FilesUpload = () => {
     const imageFile = inputValue;
     formData.append("image", imageFile);
 
-    await axios
-      .post("http://localhost:8000/image", formData)
+    await FilesApi.addFiles(formData)
+      // await axios
+      //   .post("http://localhost:8000/image", formData)
       .then((response) => {
-        console.log(response);
-        setFiles([response.data.file, ...files]);
+        setFiles([response.data.file.filename, ...files]);
       });
   };
 
@@ -49,9 +66,9 @@ export const FilesUpload = () => {
           </form>
         </div>
         {files.length ? (
-          <div>
+          <div className="container">
             {files.map((file) => {
-              return <img src={`http://localhost:8000/${file.filename}`} />;
+              return <FileCard filename={file} />;
             })}
           </div>
         ) : (
