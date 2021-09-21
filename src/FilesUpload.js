@@ -4,7 +4,6 @@ import Loading from "./Loading";
 import { FileCard } from "./FileCard";
 import { PrimaryButton } from "@workday/canvas-kit-react/button";
 import { TextInput } from "@workday/canvas-kit-react/text-input";
-import { Flex } from "@workday/canvas-kit-labs-react/layout";
 import FilesApi from "./api";
 import "./Files.css";
 
@@ -66,7 +65,8 @@ export const FilesUpload = () => {
               </div>
               <div className="form-group">
                 <PrimaryButton
-                  style={{ marginLeft: "15px" }}
+                  grow
+                  style={{ marginTop: "15px" }}
                   type="submit"
                   onClick={handleUpload}
                 >
@@ -77,7 +77,7 @@ export const FilesUpload = () => {
           </div>
         </form>
         {files.length ? (
-          <div className="container">
+          <div className="container card-container">
             {files.map((file) => {
               return (
                 <FileCard
@@ -89,7 +89,9 @@ export const FilesUpload = () => {
             })}
           </div>
         ) : (
-          <p>Upload an image!</p>
+          <div className="empty-state">
+            <p>You currently have no images uploaded</p>
+          </div>
         )}
       </div>
     </>

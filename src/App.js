@@ -1,4 +1,3 @@
-// import "./App.css";
 import { FilesUpload } from "./FilesUpload";
 
 function App() {
