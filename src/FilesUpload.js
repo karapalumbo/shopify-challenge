@@ -10,6 +10,7 @@ import "./Files.css";
 export const FilesUpload = () => {
   const [inputValue, setInputValue] = useState("");
   const [files, setFiles] = useState([]);
+  const [filesInfo, setFilesInfo] = useState([]);
 
   axios.defaults.headers.common = {
     "Content-Type": "application/json",
@@ -25,11 +26,12 @@ export const FilesUpload = () => {
   const handleRequest = async () => {
     let allFiles = await FilesApi.allFiles();
 
-    let f = allFiles.map((image) => {
+    let f = allFiles.imageFiles.map((image) => {
       let str = image.split("/");
       let img = str.pop();
       return img;
     });
+    setFilesInfo(allFiles.imagesData);
 
     setFiles(f);
   };
@@ -45,17 +47,19 @@ export const FilesUpload = () => {
     formData.append("image", imageFile);
 
     await FilesApi.addFiles(formData).then((response) => {
+      setFilesInfo([response.data.file, ...filesInfo]);
       setFiles([response.data.file.filename, ...files]);
+      //   console.warn(response.data.file);
     });
 
     ref.current.value = "";
   };
 
-  const handleDelete = async (fileId) => {
-    await FilesApi.deleteFile(fileId);
+  const handleDelete = async (filename) => {
+    await FilesApi.deleteFile(filename);
   };
 
-  if (!files) return <Loading />;
+  if (!files && !filesInfo) return <Loading />;
 
   return (
     <>
@@ -86,15 +90,16 @@ export const FilesUpload = () => {
         </form>
         {files.length ? (
           <div className="container card-container">
-            {files.map((file) => {
-              return (
-                <FileCard
-                  key={file}
-                  filename={file}
-                  handleDelete={handleDelete}
-                />
-              );
-            })}
+            {filesInfo &&
+              files.map((file) => {
+                return (
+                  <FileCard
+                    key={file}
+                    filename={file}
+                    handleDelete={handleDelete}
+                  />
+                );
+              })}
           </div>
         ) : (
           <div className="empty-state">
