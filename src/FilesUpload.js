@@ -49,14 +49,23 @@ export const FilesUpload = () => {
     await FilesApi.addFiles(formData).then((response) => {
       setFilesInfo([response.data.file, ...filesInfo]);
       setFiles([response.data.file.filename, ...files]);
-      //   console.warn(response.data.file);
     });
 
     ref.current.value = "";
   };
 
   const handleDelete = async (filename) => {
-    await FilesApi.deleteFile(filename);
+    await FilesApi.deleteFile(filename).then((resp) => {
+      FilesApi.allFiles().then((response) => {
+        let f = response.imageFiles.map((image) => {
+          let str = image.split("/");
+          let img = str.pop();
+          return img;
+        });
+        setFiles(f);
+        setFilesInfo(response.imagesData);
+      });
+    });
   };
 
   if (!files && !filesInfo) return <Loading />;
