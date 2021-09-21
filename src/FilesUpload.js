@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import Loading from "./Loading";
 import { FileCard } from "./FileCard";
@@ -14,6 +14,8 @@ export const FilesUpload = () => {
   axios.defaults.headers.common = {
     "Content-Type": "application/json",
   };
+
+  const ref = useRef();
 
   const handleChange = (event) => {
     event.preventDefault();
@@ -45,6 +47,8 @@ export const FilesUpload = () => {
     await FilesApi.addFiles(formData).then((response) => {
       setFiles([response.data.file.filename, ...files]);
     });
+
+    ref.current.value = "";
   };
 
   const handleDelete = async (fileId) => {
@@ -61,7 +65,11 @@ export const FilesUpload = () => {
             <h2>Your inventory</h2>
             <div className="upload-actions">
               <div className="form-group">
-                <TextInput type="file" onChange={handleChange}></TextInput>
+                <TextInput
+                  ref={ref}
+                  type="file"
+                  onChange={handleChange}
+                ></TextInput>
               </div>
               <div className="form-group">
                 <PrimaryButton
