@@ -97,6 +97,7 @@ export const FilesUpload = () => {
             </div>
           </div>
         </form>
+
         {files.length ? (
           <div className="container card-container">
             {filesInfo &&
@@ -112,7 +113,7 @@ export const FilesUpload = () => {
           </div>
         ) : (
           <div className="empty-state">
-            <p>You currently have no images uploaded</p>
+            <p>You currently have no images uploaded.</p>
           </div>
         )}
       </div>

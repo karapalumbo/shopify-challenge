@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="container"
+  >
+    <form
+      class="upload-form"
+    >
+      <div
+        class="form-container"
+      >
+        <h2>
+          Your inventory
+        </h2>
+        <div
+          class="upload-actions"
+        >
+          <div
+            class="form-group"
+          >
+            <input
+              class="css-1jyn810"
+              type="file"
+            />
+          </div>
+          <div
+            class="form-group"
+          >
+            <button
+              class="css-1hi3plg"
+              style="margin-top: 15px;"
+              type="submit"
+            >
+              <span
+                class="css-hrreuv"
+              >
+                Upload
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div
+      class="empty-state"
+    >
+      <p>
+        You currently have no images uploaded.
+      </p>
+    </div>
+  </div>
+</DocumentFragment>
+`;

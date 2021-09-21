@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="filecard-container css-zhde3j"
+  >
+    <div
+      class="css-6z36tk"
+    >
+      <img
+        class="filename"
+        src="http://localhost:8000/123.jpg"
+      />
+    </div>
+    <button>
+      Remove
+    </button>
+  </div>
+</DocumentFragment>
+`;
