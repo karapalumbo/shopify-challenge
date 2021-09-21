@@ -1,7 +1,22 @@
 .container {
   display: flex;
-  flex-flow: row wrap;
+  flex-direction: column;
+  /* flex-flow: row wrap; */
   justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  max-width: 90%;
+}
+
+.form-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.upload-form {
+  width: 100%;
+  margin-top: 30px;
 }
 
 .filecard-container {
@@ -12,4 +27,8 @@
 
 .filename {
   width: 400px;
+}
+
+.upload-actions {
+  display: inline-flex;
 }

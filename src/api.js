@@ -7,8 +7,8 @@ class FilesApi {
   }
 
   static async addFiles(data) {
-    let add = await axios.post("http://localhost:8000/image", data);
-    return add;
+    let addFiles = await axios.post("http://localhost:8000/image", data);
+    return addFiles;
   }
 }
 

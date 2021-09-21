@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Loading from "./Loading";
 import { FileCard } from "./FileCard";
+import { PrimaryButton } from "@workday/canvas-kit-react/button";
+import { TextInput } from "@workday/canvas-kit-react/text-input";
+import { Flex } from "@workday/canvas-kit-labs-react/layout";
 import FilesApi from "./api";
 import "./Files.css";
 
@@ -26,6 +29,7 @@ export const FilesUpload = () => {
       let img = str.pop();
       return img;
     });
+
     setFiles(f);
   };
 
@@ -39,12 +43,13 @@ export const FilesUpload = () => {
     const imageFile = inputValue;
     formData.append("image", imageFile);
 
-    await FilesApi.addFiles(formData)
-      // await axios
-      //   .post("http://localhost:8000/image", formData)
-      .then((response) => {
-        setFiles([response.data.file.filename, ...files]);
-      });
+    await FilesApi.addFiles(formData).then((response) => {
+      setFiles([response.data.file.filename, ...files]);
+    });
+  };
+
+  const handleDelete = async (fileId) => {
+    await FilesApi.deleteFile(fileId);
   };
 
   if (!files) return <Loading />;
@@ -52,27 +57,39 @@ export const FilesUpload = () => {
   return (
     <>
       <div className="container">
-        <div className="row">
-          <form>
-            <h3>File Upload</h3>
-            <div className="form-group">
-              <input type="file" onChange={handleChange}></input>
+        <form className="upload-form">
+          <div className="form-container">
+            <h2>Your inventory</h2>
+            <div className="upload-actions">
+              <div className="form-group">
+                <TextInput type="file" onChange={handleChange}></TextInput>
+              </div>
+              <div className="form-group">
+                <PrimaryButton
+                  style={{ marginLeft: "15px" }}
+                  type="submit"
+                  onClick={handleUpload}
+                >
+                  Upload
+                </PrimaryButton>
+              </div>
             </div>
-            <div className="form-group">
-              <button type="submit" onClick={handleUpload}>
-                Upload
-              </button>
-            </div>
-          </form>
-        </div>
+          </div>
+        </form>
         {files.length ? (
           <div className="container">
             {files.map((file) => {
-              return <FileCard filename={file} />;
+              return (
+                <FileCard
+                  key={file}
+                  filename={file}
+                  handleDelete={handleDelete}
+                />
+              );
             })}
           </div>
         ) : (
-          <p>Upload a photo!</p>
+          <p>Upload an image!</p>
         )}
       </div>
     </>
